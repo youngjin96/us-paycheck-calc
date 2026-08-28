@@ -28,7 +28,7 @@ export const STATE_CONTENT: Record<string, StateContent> = {
       },
       {
         title: "The standard deduction is small",
-        body: "California's standard deduction is $5,540 for single filers — about a third of the federal $16,100. More of your income is exposed to state tax than you might expect coming from another state.",
+        body: "California's standard deduction is $5,706 for single filers — about a third of the federal $16,100. More of your income is exposed to state tax than you might expect coming from another state.",
       },
       {
         title: "Personal exemptions are credits, not deductions",
@@ -263,7 +263,7 @@ export const STATE_CONTENT: Record<string, StateContent> = {
     lede: "Pennsylvania's 3.07% flat rate looks cheap — until you add local earned income tax and discover the state taxes your 401(k) contributions.",
     intro: [
       "Pennsylvania has the lowest flat income tax rate of any state that levies one: 3.07%, with no standard deduction and no personal exemption. On paper that is a bargain compared with neighbouring New York or New Jersey.",
-      "Two things complicate it. Nearly every municipality and school district levies its own Earned Income Tax, typically 1% but reaching 3.75% for Philadelphia residents. And Pennsylvania is one of the very few states that taxes elective 401(k) deferrals in the year you make them, rather than when you withdraw.",
+      "Two things complicate it. Nearly every municipality and school district levies its own Earned Income Tax, typically 1% but reaching 3.735% for Philadelphia residents. And Pennsylvania is one of the very few states that taxes elective 401(k) deferrals in the year you make them, rather than when you withdraw.",
     ],
     keyPoints: [
       {
@@ -272,7 +272,7 @@ export const STATE_CONTENT: Record<string, StateContent> = {
       },
       {
         title: "Philadelphia's Wage Tax applies to gross pay",
-        body: "The 3.75% resident rate is charged on gross wages with no deductions at all. Non-residents working in the city pay 3.44%. Combined with the state rate, a Philadelphia resident faces roughly 6.8% before federal tax.",
+        body: "The 3.735% resident rate — cut again on July 1, 2026 as part of a five-year reduction plan — is charged on gross wages with no deductions at all. Non-residents working in the city pay 3.425%. Combined with the state rate, a Philadelphia resident faces roughly 6.8% before federal tax.",
       },
       {
         title: "Suburban EIT is usually 1%",
@@ -294,7 +294,7 @@ export const STATE_CONTENT: Record<string, StateContent> = {
       },
       {
         q: "Is Pennsylvania's flat tax really only 3.07%?",
-        a: "At the state level, yes. But almost everyone also pays local Earned Income Tax, so the realistic combined rate is about 4.07% for most residents and 6.82% for Philadelphia residents.",
+        a: "At the state level, yes. But almost everyone also pays local Earned Income Tax, so the realistic combined rate is about 4.07% for most residents and 6.805% for Philadelphia residents.",
       },
     ],
   },

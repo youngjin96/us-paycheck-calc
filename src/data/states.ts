@@ -45,7 +45,7 @@ export const STATES: StateTax[] = [
       marriedSeparately: [],
       headOfHousehold: [],
     },
-    standardDeduction: { single: 5_540, married: 11_080, marriedSeparately: 5_540, headOfHousehold: 11_080 },
+    standardDeduction: { single: 5_706, married: 11_412, marriedSeparately: 5_706, headOfHousehold: 11_412 },
     exemptionCredit: { single: 153, married: 306, marriedSeparately: 153, headOfHousehold: 153 },
     supplementalRate: 0.1023,
     perDependentCredit: 475,
@@ -250,8 +250,9 @@ export const STATES: StateTax[] = [
         key: "philadelphia",
         label: "Philadelphia",
         base: "gross",
-        flatRate: 0.0375,
-        description: "필라델피아 거주자 Wage Tax. 비거주자는 3.44% 가 적용된다.",
+        // 2026-07-01 부로 인하 (직전 3.74%). 5년 감세 계획에 따라 3.70% 까지 내려간다
+        flatRate: 0.03735,
+        description: "필라델피아 거주자 Wage Tax (2026-07-01 시행). 비거주자는 3.425% 가 적용된다.",
       },
       {
         key: "pa-eit-1",

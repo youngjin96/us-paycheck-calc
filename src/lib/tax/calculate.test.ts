@@ -85,9 +85,12 @@ describe("주별 소득세", () => {
     expect(cents(r.takeHomeAnnual)).toBe(cents(100_000 - 13_170 - 6_200 - 1_450));
   });
 
-  it("캘리포니아 단독 $100k — 손계산 $5,070.42 (인적 세액공제 $153 차감 후)", () => {
+  it("캘리포니아 단독 $100k — 손계산 $5,054.98 (인적 세액공제 $153 차감 후)", () => {
+    // 과세표준 100,000 - 5,706(표준공제) = 94,294
+    //   1%×11,079 + 2%×15,185 + 4%×15,188 + 6%×16,090 + 8%×15,182 + 9.3%×21,570
+    //   = 5,207.98, 세액공제 153 차감 → 5,054.98
     const r = calculatePaycheck(annual(100_000, { stateCode: "CA" }));
-    expect(r.stateIncome.annual).toBeCloseTo(5_070.418, 2);
+    expect(r.stateIncome.annual).toBeCloseTo(5_054.98, 2);
   });
 
   it("일리노이는 인적공제 후 4.95% 정률", () => {
@@ -153,7 +156,7 @@ describe("지역 소득세", () => {
     const r = calculatePaycheck(
       annual(100_000, { stateCode: "PA", localTaxKey: "philadelphia", retirement401kPerPeriod: 10_000 }),
     );
-    expect(r.localIncome.annual).toBeCloseTo(100_000 * 0.0375, 6);
+    expect(r.localIncome.annual).toBeCloseTo(100_000 * 0.03735, 6);
   });
 
   it("지역세를 고르지 않으면 0 이다", () => {
