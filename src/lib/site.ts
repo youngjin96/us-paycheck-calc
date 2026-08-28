@@ -32,6 +32,14 @@ export const SITE = {
   adsenseId: (process.env.NEXT_PUBLIC_ADSENSE_ID ?? "").trim(),
   contactEmail: "hello@example.com",
   taxYear: 2026,
+  /**
+   * 검색엔진 색인 차단.
+   *
+   * 임시 호스트(github.io 등)에 올린 실험 배포가 색인되면, 나중에 실제 도메인으로
+   * 옮길 때 같은 콘텐츠가 두 URL 에 존재해 신호가 갈린다. 실 도메인 배포에서만
+   * 이 값을 비워둘 것.
+   */
+  noindex: (process.env.NEXT_PUBLIC_NOINDEX ?? "").trim() === "1",
 } as const;
 
 export function absoluteUrl(path: string): string {

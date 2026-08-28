@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
   twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+  robots: SITE.noindex ? { index: false, follow: false } : { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

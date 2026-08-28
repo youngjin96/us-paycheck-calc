@@ -1,0 +1,54 @@
+# 실험 배포용 — GitHub Pages 프로젝트 저장소(youngjin96.github.io/us-paycheck-calc/).
+#
+# 실 도메인이 정해지면 이 워크플로는 지우고 deploy.yml(Cloudflare Pages)만 남길 것.
+# 프로젝트 저장소는 사이트가 /<repo>/ 하위에 놓여 도메인 루트에 ads.txt 를 둘 수 없어
+# 애드센스 승인이 불가능하다. 그래서 여기서는 noindex 로 색인도 막는다.
+name: Deploy preview to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/configure-pages@v5
+
+      - run: npm ci
+      - run: npm test
+
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /us-paycheck-calc
+          NEXT_PUBLIC_SITE_URL: https://youngjin96.github.io/us-paycheck-calc
+          NEXT_PUBLIC_NOINDEX: "1"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
