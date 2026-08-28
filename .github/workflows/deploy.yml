@@ -10,7 +10,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # secrets 컨텍스트는 job 레벨 if 에서 쓸 수 없어, 별도 job 에서 존재 여부만 출력한다.
+  # 이렇게 두면 Cloudflare 설정 전에는 배포를 건너뛰고, 시크릿을 등록하는 순간
+  # 워크플로 수정 없이 자동으로 배포가 켜진다.
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.probe.outputs.configured }}
+    steps:
+      - id: probe
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$ACCOUNT" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=배포 건너뜀::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID 시크릿이 없습니다. 등록하면 자동으로 배포됩니다."
+          fi
+
   deploy:
+    needs: check
+    if: needs.check.outputs.configured == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +42,7 @@ jobs:
           cache: npm
 
       - run: npm ci
+      # 세율 계산이 틀리면 사이트 전체가 무의미하므로 테스트를 배포 관문으로 둔다
       - run: npm test
 
       - run: npm run build
@@ -27,10 +50,6 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_ADSENSE_ID: ${{ vars.NEXT_PUBLIC_ADSENSE_ID }}
 
-      # 필요한 시크릿:
-      #   CLOUDFLARE_API_TOKEN — Cloudflare Pages: Edit 권한 토큰
-      #   CLOUDFLARE_ACCOUNT_ID
-      # 변수: NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_ADSENSE_ID(승인 후)
       - name: Publish
         uses: cloudflare/wrangler-action@v3
         with:

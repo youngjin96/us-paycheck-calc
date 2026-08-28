@@ -21,7 +21,7 @@
 | 페이지 | 21개 정적 페이지 (계산기 3 + 주별 8 + 안내 5 + 시스템) |
 | 대상 주 | CA, TX, NY, FL, IL, WA, NJ, PA |
 | 과세연도 | 2026 |
-| 테스트 | 25개 (계산 엔진) |
+| 테스트 | 30개 (계산 엔진 + 설정) |
 | 배포 | 미배포 — 도메인 결정 대기 |
 
 ## 기술 스택
@@ -136,6 +136,9 @@ Pages 저장소(`youngjin96.github.io`) 슬롯은 이미 `lotto-stats` 가 쓰�
 | --- | --- |
 | Secret | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` |
 | Variable | `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADSENSE_ID` (승인 후) |
+
+두 Secret 이 없으면 배포 job 은 실패하지 않고 **건너뛴다**. 등록하는 순간
+워크플로 수정 없이 자동으로 배포가 켜진다.
 
 ---
 
