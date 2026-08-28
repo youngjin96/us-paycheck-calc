@@ -1,0 +1,39 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_ADSENSE_ID: ${{ vars.NEXT_PUBLIC_ADSENSE_ID }}
+
+      # 필요한 시크릿:
+      #   CLOUDFLARE_API_TOKEN — Cloudflare Pages: Edit 권한 토큰
+      #   CLOUDFLARE_ACCOUNT_ID
+      # 변수: NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_ADSENSE_ID(승인 후)
+      - name: Publish
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy out --project-name=us-paycheck-calc
